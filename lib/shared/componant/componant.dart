@@ -2,6 +2,7 @@
 
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app/shared/cubit/app-cubit/cubit.dart';
 
 void navigatorPushAndReblace(context, Widget) => Navigator.pushAndRemoveUntil(
     context,
@@ -63,43 +64,41 @@ navigatTo(context, Widget) {
   );
 }
 
-
-
-
-
 void showToast({
   required String message,
   required toast state,
   required String title,
   required BuildContext context,
-  Function() ? confirmFunction,   
+  Function()? confirmFunction,
 }) =>
     CoolAlert.show(
-   context: context,
-   title: title,
-   onConfirmBtnTap: confirmFunction,
-   confirmBtnText: "ok",
-   onCancelBtnTap: () => Navigator.pop(context),
-   type: choseToast(state),
-   text: message,
-);
+      context: context,
+      title: title,
+      onConfirmBtnTap: confirmFunction,
+      confirmBtnText: "ok",
+      onCancelBtnTap: () => Navigator.pop(context),
+      type: choseToast(state),
+      text: message,
+    );
 
-enum toast{
-  success,warning,error
-}
+enum toast { success, warning, error }
 
-
-
- choseToast(toast state){
-  switch(state){
-    case toast.success : return  CoolAlertType.success;
-    break;
-    case toast.error : return CoolAlertType.error;
-    break;
-    case toast.warning : return CoolAlertType.warning;
-    break;  
+choseToast(toast state) {
+  switch (state) {
+    case toast.success:
+      return CoolAlertType.success;
+      break;
+    case toast.error:
+      return CoolAlertType.error;
+      break;
+    case toast.warning:
+      return CoolAlertType.warning;
+      break;
   }
 }
+
+
+
 
 ////Sign Out
 /*

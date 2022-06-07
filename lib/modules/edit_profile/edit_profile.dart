@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/shared/componant/componant.dart';
+import 'package:social_app/shared/constant.dart';
 import 'package:social_app/shared/cubit/app-cubit/cubit.dart';
 import 'package:social_app/shared/cubit/app-cubit/states.dart';
 import 'package:social_app/shared/styles/Icons.dart';
@@ -11,8 +12,7 @@ class EditProfile extends StatelessWidget {
   var nameController = TextEditingController();
   var bioController = TextEditingController();
   var phoneController = TextEditingController();
-    var formKey = GlobalKey<FormState>();
-
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,15 @@ class EditProfile extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 5.0),
                 child: TextButton(
                   onPressed: () {
-                    
+                    AppCubit.get(context).updateprofileInfo(
+                      bio: bioController.text,
+                      email: emailController.text,
+                      name: nameController.text,
+                      phone: phoneController.text,
+                      uId: AppCubit.get(context).model!.uId,
+                      image: AppCubit.get(context).model!.image,
+                      cover: AppCubit.get(context).model!.cover,
+                    );
                   },
                   child: const Text(
                     "Update",
@@ -48,7 +56,7 @@ class EditProfile extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                if(state is UserInfoLoadingState)
+                if (state is UserInfoLoadingState)
                   const RefreshProgressIndicator(),
                 Container(
                   height: 260.0,
@@ -70,57 +78,21 @@ class EditProfile extends StatelessWidget {
                                   topEnd: Radius.circular(10.0),
                                 ),
                                 image: DecorationImage(
-                                  image: NetworkImage(
-                                    AppCubit.get(context).model!.cover,
-                                  ),
+                                  image: NetworkImage(AppCubit.get(context).model!.cover),
                                   fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.blueGrey[300],
-                                child: IconButton(
-                                  onPressed: () {
-                                   
-                                  },
-                                  icon:const Icon(
-                                    IconBroken.Camera,
-                                    color: Colors.black,
-                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Stack(
-                        alignment: AlignmentDirectional.bottomEnd,
-                        children: [
-                          CircleAvatar(
-                            radius: 65.0,
-                            backgroundColor: Colors.blueGrey,
-                            child: CircleAvatar(
-                              radius: 60.0,
-                              backgroundImage: NetworkImage(
-                                AppCubit.get(context).model!.image,
-                              ),
-                            ),
-                          ),
-                          CircleAvatar(
-                            backgroundColor: Colors.blueGrey[300],
-                            child: IconButton(
-                              onPressed: () {
-                                
-                              },
-                              icon:const Icon(
-                                IconBroken.Camera,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
+                      CircleAvatar(
+                        radius: 65.0,
+                        backgroundColor: Colors.blueGrey,
+                        child: CircleAvatar(
+                          radius: 60.0,
+                          backgroundImage: NetworkImage(AppCubit.get(context).model!.image),
+                        ),
                       ),
                     ],
                   ),
@@ -142,10 +114,10 @@ class EditProfile extends StatelessWidget {
                             IconBroken.User,
                           ),
                           validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return "Please Enter Your Email Address";
-                          }
-                        },
+                            if (value!.isEmpty) {
+                              return "Please Enter Your Email Address";
+                            }
+                          },
                         ),
                         const SizedBox(
                           height: 15.0,
@@ -158,10 +130,10 @@ class EditProfile extends StatelessWidget {
                             IconBroken.User,
                           ),
                           validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return "Please Enter Your Name";
-                          }
-                        },
+                            if (value!.isEmpty) {
+                              return "Please Enter Your Name";
+                            }
+                          },
                         ),
                         const SizedBox(
                           height: 15.0,

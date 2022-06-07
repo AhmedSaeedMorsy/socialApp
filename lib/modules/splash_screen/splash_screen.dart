@@ -25,7 +25,7 @@ class SplashScreen extends StatelessWidget {
         
         splashTransition: SplashTransition.slideTransition,
         pageTransitionType: PageTransitionType.leftToRight,
-        nextScreen:nextScreen (),
+        nextScreen: nextScreen(),
       
       ),
     );

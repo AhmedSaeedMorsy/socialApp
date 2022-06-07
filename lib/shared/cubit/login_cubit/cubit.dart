@@ -73,7 +73,7 @@ class LoginCubit extends Cubit<LoginStates> {
         "https://img.freepik.com/free-photo/full-shot-travel-concept-with-landmarks_23-2149153258.jpg?3&w=1380&t=st=1654375235~exp=1654375835~hmac=b3a1795eef95b9f34366328cedb0ceea3178d0dd339cbe807a560046dd08fbac",
     String bio = "Write Your Bio",
   }) {
-    UserModel model= UserModel(name,email,phone,image,cover,uId,bio);
+    UserModel model= UserModel(name:name, bio: bio, cover: cover, email: email, image: image, phone: phone, uId: uId,);
 
     FirebaseFirestore.instance
         .collection("user")
