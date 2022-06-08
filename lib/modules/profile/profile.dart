@@ -14,86 +14,88 @@ class ProfileScreen extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
+        var cubit = AppCubit.get(context);
+        
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               Container(
-                  height: 260.0,
-                  child: Stack(
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional.topCenter,
-                        child: Stack(
-                          alignment: AlignmentDirectional.topEnd,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              height: 200.0,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadiusDirectional.only(
-                                  topStart: Radius.circular(10.0),
-                                  topEnd: Radius.circular(10.0),
-                                ),
-                                image: DecorationImage(
-                                  image: AppCubit.get(context).backgroundCoverImage(),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.blueGrey[300],
-                                child: IconButton(
-                                  onPressed: () {
-                                    AppCubit.get(context).getCoverImage();
-                                  },
-                                  icon: const Icon(
-                                    IconBroken.Camera,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Stack(
-                        alignment: AlignmentDirectional.bottomEnd,
+                height: 260.0,
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  children: [
+                    Align(
+                      alignment: AlignmentDirectional.topCenter,
+                      child: Stack(
+                        alignment: AlignmentDirectional.topEnd,
                         children: [
-                          CircleAvatar(
-                            radius: 65.0,
-                            backgroundColor: Colors.blueGrey,
-                            child: CircleAvatar(
-                              radius: 60.0,
-                              backgroundImage: AppCubit.get(context).backgroundProfileImage(),
+                          Container(
+                            width: double.infinity,
+                            height: 200.0,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadiusDirectional.only(
+                                topStart: Radius.circular(10.0),
+                                topEnd: Radius.circular(10.0),
+                              ),
+                              image: DecorationImage(
+                                image: cubit.backgroundCoverImage(),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          CircleAvatar(
-                            backgroundColor: Colors.blueGrey[300],
-                            child: IconButton(
-                              onPressed: () {
-                                AppCubit.get(context).getProfileImage();
-                              },
-                              icon: const Icon(
-                                IconBroken.Camera,
-                                color: Colors.black,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.blueGrey,
+                              child: IconButton(
+                                onPressed: () {
+                                  AppCubit.get(context).getCoverImage();
+                                },
+                                icon: const Icon(
+                                  IconBroken.Camera,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Stack(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      children: [
+                        CircleAvatar(
+                          radius: 65.0,
+                          backgroundColor: Colors.blueGrey[300],
+                          child: CircleAvatar(
+                            radius: 60.0,
+                            backgroundImage: cubit.backgroundProfileImage(),
+                          ),
+                        ),
+                        CircleAvatar(
+                          backgroundColor: Colors.blueGrey,
+                          child: IconButton(
+                            onPressed: () {
+                              AppCubit.get(context).getProfileImage();
+                            },
+                            icon: const Icon(
+                              IconBroken.Camera,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 20.0,
-                ), Text(
-                 AppCubit.get(context).model!.name,
-                style:const TextStyle(
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              Text(
+                AppCubit.get(context).model!.name,
+                style: const TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w400,
                 ),
@@ -102,7 +104,7 @@ class ProfileScreen extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                 AppCubit.get(context).model!.bio,
+                AppCubit.get(context).model!.bio,
                 style: Theme.of(context).textTheme.caption!.copyWith(
                       fontSize: 14.0,
                     ),

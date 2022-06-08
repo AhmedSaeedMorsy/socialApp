@@ -1,11 +1,8 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/model/user_model.dart';
@@ -41,16 +38,16 @@ class AppCubit extends Cubit<AppStates> {
   ];
 
   File? profileImage;
-  final picker = ImagePicker();
-
+  var picker = ImagePicker();
   Future<void> getProfileImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
+    final pickedFile = await picker.getImage(
+      source: ImageSource.gallery,
+    );
     if (pickedFile != null) {
       profileImage = File(pickedFile.path);
       emit(ProfileImagePickedSuccessState());
     } else {
-      print("Not found profile image ");
+      print('No image selected.');
       emit(ProfileImagePickedErrorState());
     }
   }
@@ -61,11 +58,9 @@ class AppCubit extends Cubit<AppStates> {
 
     if (pickedFile != null) {
       coverImage = File(pickedFile.path);
-      
-      print(pickedFile.path);
       emit(CoverImagePickedSuccessState());
     } else {
-      print("Not found cover image ");
+      print('No image selected.');
       emit(CoverImagePickedErrorState());
     }
   }
@@ -121,20 +116,15 @@ class AppCubit extends Cubit<AppStates> {
     required String image,
     required String cover,
   }) {
-    if (coverImage != null) {
-      uploadCoverImage();
-    } else if (profileImage != null) {
-      uploadProfileImage();
-    } else if (profileImage != null && coverImage != null) {
-      uploadProfileImage();
-      uploadCoverImage();
-    } else {
+    
       UserModel model = UserModel(
         name: name,
         email: email,
         phone: phone,
-        bio: bio, cover: cover, image:image, uId: uId,
-      
+        bio: bio,
+        cover: cover,
+        image: image,
+        uId: uId,
       );
       FirebaseFirestore.instance
           .collection("user")
@@ -146,7 +136,7 @@ class AppCubit extends Cubit<AppStates> {
         print(error.toString());
         emit(UpdateProfileInfoErrorState());
       });
-    }
+    
   }
 
   backgroundProfileImage() {
@@ -155,7 +145,7 @@ class AppCubit extends Cubit<AppStates> {
         model!.image,
       );
     } else {
-      FileImage(profileImage!);
+      return FileImage(profileImage!);
     }
   }
 
@@ -165,7 +155,7 @@ class AppCubit extends Cubit<AppStates> {
         model!.cover,
       );
     } else {
-      FileImage(coverImage!);
+      return FileImage(coverImage!);
     }
   }
 }

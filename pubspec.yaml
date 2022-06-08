@@ -44,7 +44,7 @@ dependencies:
   cloud_firestore: ^3.1.17
   shared_preferences: ^2.0.15
   tab_container: ^2.0.0
-  image_picker: ^0.8.5+3
+  image_picker: ^0.7.4
   firebase_storage: ^10.2.17
 
 dev_dependencies:
