@@ -65,8 +65,14 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-  String profileImageUrl = '';
-  void uploadProfileImage() {
+  void uploadProfileImage({
+    required String name,
+    required String email,
+    required String phone,
+    required String bio,
+    required String uId,
+    required String cover,
+  }) {
     emit(UploadProfileImageLoadingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
@@ -74,7 +80,15 @@ class AppCubit extends Cubit<AppStates> {
         .putFile(profileImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        profileImageUrl = value;
+        updateprofileInfo(
+          bio: bio,
+          cover: cover,
+          email: email,
+          image: value,
+          name: name,
+          phone: phone,
+          uId: uId,
+        );
         emit(UploadProfileImageSuccessState());
       }).catchError((error) {
         print(error.toString());
@@ -86,8 +100,14 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  String coverImageUrl = "";
-  void uploadCoverImage() {
+  void uploadCoverImage({
+    required String name,
+    required String email,
+    required String phone,
+    required String bio,
+    required String uId,
+    required String image,
+  }) {
     emit(UploadCoverImageLoadingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
@@ -95,7 +115,15 @@ class AppCubit extends Cubit<AppStates> {
         .putFile(coverImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        coverImageUrl = value;
+        updateprofileInfo(
+          bio: bio,
+          cover: value,
+          email: email,
+          image: image,
+          name: name,
+          phone: phone,
+          uId: uId,
+        );
         emit(UploadCoverImageSuccessState());
       }).catchError((error) {
         print(error.toString());
@@ -116,27 +144,26 @@ class AppCubit extends Cubit<AppStates> {
     required String image,
     required String cover,
   }) {
-    
-      UserModel model = UserModel(
-        name: name,
-        email: email,
-        phone: phone,
-        bio: bio,
-        cover: cover,
-        image: image,
-        uId: uId,
-      );
-      FirebaseFirestore.instance
-          .collection("user")
-          .doc(uId)
-          .update(model.toMap())
-          .then((value) {
-        getUserInfo();
-      }).catchError((error) {
-        print(error.toString());
-        emit(UpdateProfileInfoErrorState());
-      });
-    
+    emit(UpdateProfileInfoLoadingState());
+    UserModel model = UserModel(
+      name: name,
+      email: email,
+      phone: phone,
+      bio: bio,
+      cover: cover,
+      image: image,
+      uId: uId,
+    );
+    FirebaseFirestore.instance
+        .collection("user")
+        .doc(uId)
+        .update(model.toMap())
+        .then((value) {
+      getUserInfo();
+    }).catchError((error) {
+      print(error.toString());
+      emit(UpdateProfileInfoErrorState());
+    });
   }
 
   backgroundProfileImage() {

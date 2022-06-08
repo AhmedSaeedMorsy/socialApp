@@ -15,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
-        
+
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -109,6 +109,45 @@ class ProfileScreen extends StatelessWidget {
                       fontSize: 14.0,
                     ),
               ),
+              if (cubit.profileImage != null || cubit.coverImage != null)
+                Row(
+                  children: [
+                    if(state is ProfileImagePickedSuccessState)
+                      Expanded(
+                      child: defaultButton(
+                        text: "update Profile Image",
+                        function: () {
+                          cubit.uploadProfileImage(
+                            name: cubit.model!.name,
+                            email: cubit.model!.email,
+                            phone: cubit.model!.phone,
+                            bio: cubit.model!.bio,
+                            uId: cubit.model!.uId,
+                            cover: cubit.model!.cover,
+                          );
+                        },
+                      ),
+                    ),
+                    if(state is CoverImagePickedSuccessState)
+                      Expanded(
+                      child: defaultButton(
+                        text: "update cover Image",
+                        function: () {
+                          cubit.uploadCoverImage(
+                            name: cubit.model!.name,
+                            email: cubit.model!.email,
+                            phone: cubit.model!.phone,
+                            bio: cubit.model!.bio,
+                            uId: cubit.model!.uId,
+                            image: cubit.model!.image,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                if(state is UpdateProfileInfoLoadingState)
+                  const RefreshProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Row(

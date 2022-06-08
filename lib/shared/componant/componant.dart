@@ -52,7 +52,7 @@ Widget defaultButton(
         ),
       ),
       decoration: BoxDecoration(
-        color: Colors.blueGrey[300],
+        color: Colors.grey[700],
         borderRadius: BorderRadius.circular(15.0),
       ),
     );
