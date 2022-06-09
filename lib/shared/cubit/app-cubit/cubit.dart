@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:social_app/model/post_model.dart';
 import 'package:social_app/model/user_model.dart';
 import 'package:social_app/modules/chat/chat.dart';
 import 'package:social_app/modules/home/home.dart';
@@ -184,5 +185,85 @@ class AppCubit extends Cubit<AppStates> {
     } else {
       return FileImage(coverImage!);
     }
+  }
+
+  File? postImage;
+  Future<void> getPostImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      postImage = File(pickedFile.path);
+      emit(PostImagePickedSuccessState());
+    } else {
+      print('No image selected.');
+      emit(PostImagePickedErrorState());
+    }
+  }
+
+  void uploadPostImage({
+    required String name,
+    required String dateTime,
+    required String text,
+    required String image,
+    required String uId,
+  }) {
+    emit(UploadPostImageLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('post/${Uri.file(postImage!.path).pathSegments.last}')
+        .putFile(postImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+        createPost(
+          dateTime: dateTime,
+          image: image,
+          name: name,
+          text: text,
+          uId: uId,
+          postImage: value,
+        );
+        emit(UploadPostImageSuccessState());
+      }).catchError((error) {
+        print(error.toString());
+        emit(UploadPostImageErrorState());
+      });
+    }).catchError((error) {
+      print(error.toString());
+      emit(UploadPostImageErrorState());
+    });
+  }
+
+  void createPost({
+    required String name,
+    required String dateTime,
+    required String text,
+    required String image,
+    required String uId,
+    String ? postImage,
+  }) {
+    emit(CreatePostLoadingState());
+    PostModel model = PostModel(
+      name: name,
+      dateTime: dateTime,
+      text: text,
+      postImage: postImage??"" ,
+      image: image,
+      uId: uId,
+    );
+    FirebaseFirestore.instance
+        .collection("post")
+        .add(model.toMap())
+        .then((value) {
+      emit(CreatePostSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(CreatePostErrorState());
+    });
+  }
+
+  void removePostImage() {
+    postImage = null;
+    emit(RemovePostImageState());
   }
 }

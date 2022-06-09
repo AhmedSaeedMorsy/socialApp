@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/modules/add_post/add_post.dart';
 import 'package:social_app/shared/styles/Icons.dart';
 import 'package:tab_container/tab_container.dart';
 import 'package:social_app/shared/componant/componant.dart';
@@ -70,6 +71,18 @@ class HomeLayOut extends StatelessWidget {
             },
             fallback: (context) =>
                 const Center(child: CircularProgressIndicator()),
+          ),
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                navigatTo(context, AddPost());
+              },
+              child: const Icon(
+                IconBroken.Paper_Plus,
+              ),
+              backgroundColor: Colors.blueGrey,
+            ),
           ),
         );
       },

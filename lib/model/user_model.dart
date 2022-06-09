@@ -17,13 +17,6 @@ class UserModel {
     required this.uId,
   });
 
-  UserModel.Info({
-    required this.name,
-    required this.email,
-    required this.phone,
-    required this.bio,
-  });
-
   UserModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     email = json['email'];

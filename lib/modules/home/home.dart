@@ -8,19 +8,16 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 10.0,
         ),
         Expanded(
           child: ListView.separated(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) => buildPostItem(context),
             separatorBuilder: (context, index) => const SizedBox(height: 5.0),
             itemCount: 10,
           ),
-        ),
-        SizedBox(
-          height: 20.0,
         ),
       ],
     );
