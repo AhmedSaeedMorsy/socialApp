@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           create: (context) => LoginCubit(),
         ),
         BlocProvider(
-          create: (context) => AppCubit()..getUserInfo(),
+          create: (context) => AppCubit()..getUserInfo()..getPost(),
         ),
       ],
       child: MaterialApp(

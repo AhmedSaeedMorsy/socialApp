@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/layout/home_layout.dart';
+import 'package:social_app/modules/home/home.dart';
+import 'package:social_app/shared/componant/componant.dart';
 import 'package:social_app/shared/cubit/app-cubit/cubit.dart';
 import 'package:social_app/shared/cubit/app-cubit/states.dart';
 import 'package:social_app/shared/styles/Icons.dart';
@@ -10,7 +13,13 @@ class AddPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is CreatePostSuccessState){
+          showToast(message: "done", state: toast.success, title: "congratulation", context: context,confirmFunction: (){
+            navigatTo(context,const HomeLayOut());
+          });
+        } 
+      },
       builder: (context, state) {
         var cubit = AppCubit.get(context);
         return Scaffold(

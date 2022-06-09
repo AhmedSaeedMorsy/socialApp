@@ -1,4 +1,9 @@
+import 'package:conditional_builder_rec/conditional_builder_rec.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/model/post_model.dart';
+import 'package:social_app/shared/cubit/app-cubit/cubit.dart';
+import 'package:social_app/shared/cubit/app-cubit/states.dart';
 import 'package:social_app/shared/styles/Icons.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -6,24 +11,38 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 10.0,
-        ),
-        Expanded(
-          child: ListView.separated(
-            physics: const BouncingScrollPhysics(),
-            itemBuilder: (context, index) => buildPostItem(context),
-            separatorBuilder: (context, index) => const SizedBox(height: 5.0),
-            itemCount: 10,
+    return BlocConsumer<AppCubit, AppStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return ConditionalBuilderRec(
+          condition: AppCubit.get(context).posts.isNotEmpty,
+          builder: (context) {
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Expanded(
+                  child: ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) => buildPostItem(context,AppCubit.get(context).posts[index]),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 5.0),
+                    itemCount: AppCubit.get(context).posts.length,
+                  ),
+                ),
+              ],
+            );
+          },
+          fallback: (context) => const Center(
+            child: CircularProgressIndicator(),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 
-  Widget buildPostItem(BuildContext context) => Card(
+  Widget buildPostItem(BuildContext context, PostModel model) => Card(
         elevation: 20.0,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
@@ -32,10 +51,10 @@ class HomeScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 25.0,
                     backgroundImage: NetworkImage(
-                      "https://img.freepik.com/free-photo/waist-up-portrait-handsome-serious-unshaven-male-keeps-hands-together-dressed-dark-blue-shirt-has-talk-with-interlocutor-stands-against-white-wall-self-confident-man-freelancer_273609-16320.jpg?t=st=1654375165~exp=1654375765~hmac=a1e952e21a194faf086fa93238f5e8617442bce818c1c2b3396ce2e8587e4714&w=1060",
+                      model.image,
                     ),
                   ),
                   const SizedBox(
@@ -48,15 +67,15 @@ class HomeScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 6.0),
                           child: Row(
-                            children: const [
+                            children: [
                               Text(
-                                "Ahmed Saeed",
-                                style: TextStyle(
+                                model.name,
+                                style: const TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.w400),
                               ),
-                              SizedBox(width: 10.0),
-                              Icon(
+                              const SizedBox(width: 10.0),
+                              const Icon(
                                 Icons.check_circle,
                                 size: 18.0,
                                 color: Colors.blueAccent,
@@ -65,7 +84,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "January 21, 2022 at 11:00 pm",
+                          model.dateTime,
                           style: Theme.of(context).textTheme.caption!.copyWith(
                                 fontSize: 14.0,
                               ),
@@ -74,7 +93,11 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.more_horiz)),
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.more_horiz,
+                    ),
+                  ),
                 ],
               ),
               Padding(
@@ -85,60 +108,61 @@ class HomeScreen extends StatelessWidget {
                   color: Colors.grey[400],
                 ),
               ),
-              const Text(
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ",
-                style: TextStyle(
+              Text(
+                model.text,
+                style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   height: 1.4,
                   fontSize: 16.0,
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Wrap(
-                  children: [
-                    Container(
-                      height: 25.0,
-                      child: MaterialButton(
-                        padding: const EdgeInsets.only(right: 5.0),
-                        minWidth: 1.0,
-                        onPressed: () {},
-                        child: const Text(
-                          "#Flutter",
-                          style: TextStyle(color: Colors.blueAccent),
-                        ),
-                      ),
+              // Container(
+              //   padding: const EdgeInsets.symmetric(vertical: 8.0),
+              //   child: Wrap(
+              //     children: [
+              //       Container(
+              //         height: 25.0,
+              //         child: MaterialButton(
+              //           padding: const EdgeInsets.only(right: 5.0),
+              //           minWidth: 1.0,
+              //           onPressed: () {},
+              //           child: const Text(
+              //             "#Flutter",
+              //             style: TextStyle(color: Colors.blueAccent),
+              //           ),
+              //         ),
+              //       ),
+              //       Container(
+              //         height: 25.0,
+              //         child: MaterialButton(
+              //           padding: const EdgeInsets.only(right: 5.0),
+              //           minWidth: 1.0,
+              //           onPressed: () {},
+              //           child: const Text(
+              //             "#Flutter_Development",
+              //             style: TextStyle(color: Colors.blueAccent),
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              if (model.postImage != "")
+                Container(
+                  width: double.infinity,
+                  height: 240.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadiusDirectional.circular(
+                      4.0,
                     ),
-                    Container(
-                      height: 25.0,
-                      child: MaterialButton(
-                        padding: const EdgeInsets.only(right: 5.0),
-                        minWidth: 1.0,
-                        onPressed: () {},
-                        child: const Text(
-                          "#Flutter_Development",
-                          style: TextStyle(color: Colors.blueAccent),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                          model.postImage,
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                height: 240.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadiusDirectional.circular(
-                    4.0,
+                        fit: BoxFit.cover),
                   ),
-                  image: const DecorationImage(
-                      image: AssetImage(
-                        "assets/image/post.webp",
-                      ),
-                      fit: BoxFit.cover),
                 ),
-              ),
-              Padding(
+               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Row(
                   children: [
@@ -153,7 +177,7 @@ class HomeScreen extends StatelessWidget {
                             width: 5.0,
                           ),
                           Text(
-                            "120",
+                            "0",
                             style: TextStyle(color: Colors.grey),
                           ),
                         ],
@@ -171,7 +195,7 @@ class HomeScreen extends StatelessWidget {
                             width: 5.0,
                           ),
                           Text(
-                            "200 comment",
+                            "0 comment",
                             style: TextStyle(color: Colors.grey),
                           ),
                         ],
@@ -190,10 +214,10 @@ class HomeScreen extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 20.0,
-                    backgroundImage: AssetImage(
-                      "assets/image/profile.webp",
+                    backgroundImage: NetworkImage(
+                      AppCubit.get(context).model!.image,
                     ),
                   ),
                   const SizedBox(

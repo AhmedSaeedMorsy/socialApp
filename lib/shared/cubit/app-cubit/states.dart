@@ -56,3 +56,12 @@ class CreatePostSuccessState extends AppStates {}
 class CreatePostErrorState extends AppStates {}
 
 class RemovePostImageState extends AppStates{}
+
+class GetPostLoadingState extends AppStates {}
+
+class GetPostSuccessState extends AppStates {}
+
+class GetPostErrorState extends AppStates {
+  final String error;
+  GetPostErrorState(this.error);
+}

@@ -2,7 +2,7 @@ class PostModel {
   late String name;
   late String image;
   late String uId;
-  String? postImage ;
+  String postImage = "" ;
   late String text;
   late String dateTime;
 

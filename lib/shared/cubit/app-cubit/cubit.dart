@@ -240,14 +240,14 @@ class AppCubit extends Cubit<AppStates> {
     required String text,
     required String image,
     required String uId,
-    String ? postImage,
+    String? postImage,
   }) {
     emit(CreatePostLoadingState());
     PostModel model = PostModel(
       name: name,
       dateTime: dateTime,
       text: text,
-      postImage: postImage??"" ,
+      postImage: postImage ?? "",
       image: image,
       uId: uId,
     );
@@ -265,5 +265,19 @@ class AppCubit extends Cubit<AppStates> {
   void removePostImage() {
     postImage = null;
     emit(RemovePostImageState());
+  }
+
+  List<PostModel> posts = [];
+  void getPost() {
+    emit(GetPostLoadingState());
+    FirebaseFirestore.instance.collection("post").get().then((value) {
+      value.docs.forEach((element) {
+        posts.add(PostModel.fromJson(element.data()));
+      });
+      emit(GetPostSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetPostErrorState(error.toString()));
+    });
   }
 }
