@@ -65,3 +65,10 @@ class GetPostErrorState extends AppStates {
   final String error;
   GetPostErrorState(this.error);
 }
+
+class LikesPostSuccessState extends AppStates {}
+
+class LikesPostErrorState extends AppStates {
+  final String error;
+  LikesPostErrorState(this.error);
+}

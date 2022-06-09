@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
                 Expanded(
                   child: ListView.separated(
                     physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) => buildPostItem(context,AppCubit.get(context).posts[index]),
+                    itemBuilder: (context, index) => buildPostItem(context,AppCubit.get(context).posts[index],index),
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 5.0),
                     itemCount: AppCubit.get(context).posts.length,
@@ -42,7 +42,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget buildPostItem(BuildContext context, PostModel model) => Card(
+  Widget buildPostItem(BuildContext context, PostModel model,index) => Card(
         elevation: 20.0,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
@@ -168,16 +168,16 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Row(
-                        children: const [
-                          Icon(
+                        children: [
+                          const Icon(
                             IconBroken.Heart,
                             color: Colors.redAccent,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5.0,
                           ),
                           Text(
-                            "0",
+                            "${AppCubit.get(context).likes[index]}",
                             style: TextStyle(color: Colors.grey),
                           ),
                         ],
@@ -232,7 +232,9 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      AppCubit.get(context).likesPost(AppCubit.get(context).postsId[index]);
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Row(
