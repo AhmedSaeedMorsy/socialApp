@@ -43,9 +43,9 @@ class PostImagePickedSuccessState extends AppStates {}
 
 class PostImagePickedErrorState extends AppStates {}
 
-class UploadPostImageLoadingState extends AppStates{}
+class UploadPostImageLoadingState extends AppStates {}
 
-class UploadPostImageSuccessState extends AppStates{}
+class UploadPostImageSuccessState extends AppStates {}
 
 class UploadPostImageErrorState extends AppStates {}
 
@@ -55,7 +55,7 @@ class CreatePostSuccessState extends AppStates {}
 
 class CreatePostErrorState extends AppStates {}
 
-class RemovePostImageState extends AppStates{}
+class RemovePostImageState extends AppStates {}
 
 class GetPostLoadingState extends AppStates {}
 
@@ -72,3 +72,15 @@ class LikesPostErrorState extends AppStates {
   final String error;
   LikesPostErrorState(this.error);
 }
+
+class GetAllUsersLoadingState extends AppStates {}
+
+class GetAllUsersSuccessState extends AppStates {}
+
+class GetAllUsersErrorState extends AppStates {}
+
+class SendMessageSuccessState extends AppStates {}
+
+class SendMessageErrorState extends AppStates {}
+
+class GetMessageSuccessState extends AppStates {}
